@@ -16,14 +16,17 @@ def fsl_run(images_path,output_path):
     else:
         print("Successfully created the directory %s " % path)
 
-    print(os.getcwd())
-    first.inputs.in_file = 'sample-001.nii.gz'
-    first.inputs.out_file = 'output.nii'
-    print("Working - 1")
-    try:
-        res = first.run()
-    except Exception as e:
-        print(e)
+    #iterating over given path
+    for i in range(len(file_Names)):
+        first.inputs.in_file = file_Names[i]
+        output_file_name = i+'output.nii'
+        first.inputs.out_file = output_path+"/"+output_file_name
+
+        try:
+            res = first.run()
+            cleanUp(output_path,output_file_name)
+        except Exception as e:
+            print(e)
 
 path = os.getcwd()
 fsl_run(path)

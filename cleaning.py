@@ -5,20 +5,14 @@ import glob
 import time
 import shutil
 
-def cleanUp(file_path, output_file):
+def cleanUp(output_path, output_file):
 
-	cwd = '/home/nikhil/Spine/Try1'
-	file_path = "/home/nikhil/Spine/Try1/output-1_all_fast_firstseg.nii.gz"
+	output_path = cwd = '/home/nikhil/Spine/Try1'
 
-	while not os.path.exists(file_path):
-		print("1")
-		time.sleep(10)
+	# Delete Dir
+	shutil.rmtree(output_file + ".logs")
 
-	for CleanUp in glob.glob(cwd+'/*'):
+	for CleanUp in glob.glob(output_path+'/*'):
 		if not CleanUp.endswith('_all_fast_firstseg.nii.gz'):
 			print("Delete")
 			os.remove(CleanUp)
-
-	#Delete Dir
-	shutil.rmtree(output_file+".logs")
-
