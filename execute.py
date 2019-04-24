@@ -10,7 +10,9 @@ def volume_calc(imageName):
     if (os.path.isdir(json_output) == False):
         os.mkdir(json_output)
     img = sitk.ReadImage(imageName)
-    file_name = imageName.split("/")[2]
+    file_name = imageName.split("/")[-1]
+    print(file_name)
+
 
     #casting the image so that the pixel dimesions all match with each other
     img_mask = sitk.Cast(img , sitk.sitkUInt8)
@@ -28,11 +30,12 @@ def volume_calc(imageName):
     #Setting up model to extract features
     extractor = featureextractor.RadiomicsFeaturesExtractor(params)
 
+    '''
     #check configuration
     print('Extraction parameters:\n\t', extractor.settings)
     print('Enabled filters:\n\t', extractor._enabledImagetypes)
     print('Enabled features:\n\t', extractor._enabledFeatures)
-
+    '''
     #Hippocampus ROI
     hippocampus = extractor.execute(img, img_mask, label=53)
     save(json_output, hippocampus, "hippocampus", file_name)
@@ -66,7 +69,7 @@ def volume_calc(imageName):
 def save(json_output,dic,name,file_name):
     if (os.path.isdir(json_output+"/"+file_name) == False):
         os.mkdir(json_output+"/"+file_name)
-    output=json_output + name+'.json'
+    output=json_output+"/"+file_name + "/" +name+'.json'
     with open(output, 'w') as outfile:
         json.dump(dic, outfile)
 
